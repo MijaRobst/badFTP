@@ -1,11 +1,12 @@
+"""badFTP's server."""
 import socket
 import os
-import signal
 from select import select
 import logistics as logs
 
 
 def manageConnection(socket):
+    """Listen to the client and performs its required operations."""
     quit = False
     path = os.getcwd()
     while (not quit):
@@ -24,7 +25,7 @@ def manageConnection(socket):
         elif (command == logs.CD):
             path = logs.changedir(path, data)
 
-        elif (command == logs.SEND):
+        elif (command == logs.SEND):  # Client sends, server receives
             lst = data.split("/")
             if (len(lst) < 2):
                 relpath = path
@@ -36,7 +37,7 @@ def manageConnection(socket):
                 continue
             logs.recv(socket, relpath + "/" + filename)
 
-        elif (command == logs.RECV):
+        elif (command == logs.RECV):  # Client receives, server sends
             origin = logs.get_new_dir(path, data)
             if (origin):
                 fh = open(origin, "r")

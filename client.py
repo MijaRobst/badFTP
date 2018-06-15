@@ -1,3 +1,4 @@
+"""badFTP's client."""
 import os
 import sys
 from select import select
@@ -6,22 +7,27 @@ import logistics as logs
 
 
 def print_help():
+    """Print the client's help."""
     print("This is some help")
 
 
 def get_server_ls(sock):
+    """Perform ls in the server."""
     return logs.sendTCP(sock, logs.LS, "", True)
 
 
 def get_server_cwd(sock):
+    """Get server's current working directory."""
     return logs.sendTCP(sock, logs.CWD, "", True)
 
 
 def server_cd(sock, newpath):
+    """Perform cd in the server."""
     logs.sendTCP(sock, logs.CD, newpath)
 
 
 def run_command(sock, command, path):
+    """Run the given command."""
     if (command[0] == "bye" or command[0] == "exit"):
         logs.sendTCP(sock, logs.QUIT, "")
         return (True, path)
